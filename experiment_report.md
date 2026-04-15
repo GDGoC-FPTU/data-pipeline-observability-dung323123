@@ -1,35 +1,32 @@
 # Experiment Report: Data Quality Impact on AI Agent
 
-**Student ID:** AI20K-XXXX
-**Name:** (Dien ten cua ban)
-**Date:** (Dien ngay thuc hien)
+**Student ID:** 2A202600177
+**Name:** Nguyễn Mạnh Dũng
+**Date:** 2026-04-15
 
 ---
 
-## 1. Ket qua thi nghiem
+## 1. Kết quả thí nghiệm
 
-Chay `agent_simulation.py` voi 2 bo du lieu va ghi lai ket qua:
+Chạy `agent_simulation.py` với 2 bộ dữ liệu và ghi lại kết quả:
 
 | Scenario | Agent Response | Accuracy (1-10) | Notes |
 |----------|----------------|-----------------|-------|
-| Clean Data (`processed_data.csv`) | (Ghi cau tra loi cua Agent) | | |
-| Garbage Data (`garbage_data.csv`) | (Ghi cau tra loi cua Agent) | | |
+| Clean Data (`processed_data.csv`) | Agent: Based on my data, the best choice is Laptop at $1200. | 9/10 | Kết quả hợp lý với tập Electronics đã được làm sạch và validate. |
+| Garbage Data (`garbage_data.csv`) | Agent: Based on my data, the best choice is Nuclear Reactor at $999999. | 1/10 | Outlier giá quá lớn làm Agent ưu tiên sai sản phẩm, kết quả không thực tế. |
 
 ---
 
-## 2. Phan tich & nhan xet
+## 2. Phân tích & nhận xét
 
-### Tai sao Agent tra loi sai khi dung Garbage Data?
+### Tại sao Agent trả lời sai khi dùng Garbage Data?
 
-(Viet nhan xet cua ban o day — it nhat 50 tu)
-
-(Hay phan tich cac van de nhu Duplicate IDs, wrong data types, outliers, null values
-va giai thich tai sao chung anh huong den ket qua cua Agent.)
+Agent trong `agent_simulation.py` chọn sản phẩm electronics có `price` cao nhất, nên rất nhạy cảm với dữ liệu bẩn. Trong `garbage_data.csv`, bản ghi "Nuclear Reactor" có giá 999999 là outlier bất thường, vượt xa mặt bằng giá thật, nên agent bị "kéo" về lựa chọn này. Ngoài ra bộ dữ liệu rác còn có duplicate ID (`id=1` lặp lại), sai kiểu dữ liệu (`ten dollars`), và giá trị thiếu (`id` rỗng, `category` rỗng, `price=0`). Các lỗi này làm giảm độ tin cậy của nguồn tri thức, khiến quy tắc truy vấn đơn giản của agent dễ sinh ra câu trả lời sai.
 
 ---
 
-## 3. Ket luan
+## 3. Kết luận
 
-**Quality Data > Quality Prompt?** (Dong y hay khong? Giai thich ngan gon.)
+**Quality Data > Quality Prompt?** (Đồng ý hay không? Giải thích ngắn gọn.)
 
-(Viet ket luan cua ban o day)
+Đồng ý. Prompt không thể "cứu" dữ liệu xấu nếu data gốc đã nhiễm nhiều outlier, null, và wrong type. Trong thí nghiệm này, cùng một câu hỏi và cùng một logic agent, clean data cho kết quả hợp lý, còn garbage data cho kết quả lệch hoàn toàn. Vì vậy, data quality là nền tảng quan trọng hơn để đảm bảo output AI ổn định và đáng tin.
